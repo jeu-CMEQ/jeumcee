@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Concours</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #00a0cf, #0077c8);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1rem;
+      min-height: 100vh;
+    }
+
+    .cta-container {
+      position: relative;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .cta-text {
+      font-size: 2rem;
+      font-weight: bold;
+      background: white;
+      color: #1e3c72;
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+      display: inline-block;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .hand-img {
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      transform: translateY(-50%) translateX(-20px) rotate(-10deg);
+      width: 80px;
+      max-width: 15vw;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      border: none;
+      text-align: center;
+    }
+
+    button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #ff9800;
+      color: white;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #e68900;
+    }
+
+    #playButton {
+      background-color: #4caf50;
+      display: none;
+    }
+
+    #playButton:hover {
+      background-color: #388e3c;
+    }
+
+    #verificationMessage {
+      margin-top: 1rem;
+      font-weight: bold;
+      text-align: center;
+      font-size: 1.1rem;
+      color: #ffffcc;
+    }
+
+    .lots {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 2px solid white;
+  border-radius: 1rem;
+  padding: 1rem 2rem 2rem;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lots h2 {
+  font-size: 2rem;
+  color: #fff176;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.lots ul {
+  list-style: none;
+  padding: 50;
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 2;
+  width: 100%;
+  max-width: 400px;
+}
+
+.lots li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.8rem;
+  color: white;
+  font-weight: 500;
+}
+
+.lots li .gift {
+  display: inline-block;
+  width: 1.5rem; /* même largeur pour toutes les icônes 🎁 */
+  text-align: center;
+}
+
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cta-container">
+    <img class="hand-img" src="main.PNG" alt="Main qui pointe">
+    <div class="cta-text">PARTICIPEZ AU CONCOURS</div>
+  </div>
+
+  <div class="form-container">
+    <input type="text" id="numeroMembre" placeholder="Entrez votre numéro de membre">
+    <button onclick="verifierMembre()">Vérifier</button>
+    <div id="verificationMessage"></div>
+    <button id="playButton" onclick="lancerJeu()">Lancer le jeu</button>
+  </div>
+
+  <div class="lots">
+    <h2>Lots à gagner</h2>
+<ul>
+  <li><span class="gift">🎁</span><span style="color:black; font-size: 1.2em;">Gros lot : REER 1000 $</span></li>
+  <li><span class="gift">🎁</span><span>2 nuitées au congrès 2025</span></li>
+  <li><span class="gift">🎁</span><span>5 bons de 100 $ pour la formation</span></li>
+  <li><span class="gift">🎁</span><span>154 aide-mémoire </span></li>
+  <li><span class="gift">🎁</span><span>250 épinglettes </span></li>
+</ul>
+
+  </div>
+
+  <script>
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzRub7uoRPz5aYpeW-BesCzNBIwn3s2xY2vpcPrn9F6uPV8a4orOo3npoa0GNVpHY1R/exec';
+
+    function verifierMembre() {
+      const numero = document.getElementById("numeroMembre").value;
+      document.getElementById("verificationMessage").innerText = "Vérification en cours...";
+
+      fetch(`${scriptUrl}?action=verifierResultat&numeroMembre=${numero}`)
+        .then(response => response.json())
+        .then(data => {
+          const message = data.message;
+          document.getElementById("verificationMessage").innerText = message;
+
+          if (!message || message.trim() === "") {
+            document.getElementById("verificationMessage").innerText = "❌ Vous n'avez pas répondu à la question.";
+            document.getElementById("playButton").style.display = "none";
+          } else if (message.trim().includes("Correct")) {
+            localStorage.setItem("numeroMembre", numero);
+            document.getElementById("playButton").style.display = "inline-block";
+            document.querySelector("button").style.display = "none";
+            document.getElementById("numeroMembre").disabled = true;
+          } else {
+            document.getElementById("verificationMessage").innerText = "❌ Vous ne pouvez pas jouer.";
+            document.getElementById("playButton").style.display = "none";
+          }
+        })
+        .catch(() => {
+          document.getElementById("verificationMessage").innerText = "Erreur de connexion.";
+        });
+    }
+
+    function lancerJeu() {
+      window.location.href = 'jeu2.html';
+    }
+
+    document.getElementById("numeroMembre").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        document.querySelector("button").click();
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Enter" && document.getElementById("playButton").style.display === "inline-block") {
+        document.getElementById("playButton").click();
+      }
+    });
+  </script>
+
+</body>
+</html>

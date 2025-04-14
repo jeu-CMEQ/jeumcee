@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concours anniversaire 🎰</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #4b92f0, #4CAF50);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    #tirage {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .slot-machine {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .slot {
+      background: #fff;
+      color: #333;
+      font-size: 5rem;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    button {
+      background-color: #ff5722;
+      color: white;
+      font-size: 1.5rem;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #e64a19;
+    }
+
+    #popup {
+      background-color: #eb6e1b;
+      color: white;
+      font-size: 2rem;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      display: none;
+    }
+
+    #newPlayerButton {
+      background-color: #4CAF50;
+      margin-top: 20px;
+      font-size: 1.5rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎰 Concours anniversaire</h1>
+
+  <div id="tirage">
+
+    <div class="slot-machine">
+      <div class="slot" id="slot1">❓</div>
+      <div class="slot" id="slot2">❓</div>
+      <div class="slot" id="slot3">❓</div>
+    </div>
+    <button id="playButton" onclick="tournerRoue()">🎰 Lancer</button>
+  </div>
+
+  <div id="popup"></div>
+  <button id="newPlayerButton" onclick="nouveauJoueur()">Nouveau Joueur</button>
+
+  <audio id="slotSound">
+    <source src="https://www.myinstants.com/media/sounds/slot-machine.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="victorySound">
+    <source src="https://www.myinstants.com/media/sounds/tada-fanfare-a.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    let symbols = ["💡", "⚡", "🔌", "🔋", "🔧"];
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxeWVgUuVUyk99S_3tYzSVMMt9koeEeNmQMrsfJ3QGx45fwS2XVhjB_XmSb0JEawvjx/exec'; 
+    let jeuFini = false;
+    let lotGagne = null;
+
+    function tournerRoue() {
+      const slot1 = document.getElementById("slot1");
+      const slot2 = document.getElementById("slot2");
+      const slot3 = document.getElementById("slot3");
+      const numeroMembre = localStorage.getItem("numeroMembre");
+
+      document.getElementById("slotSound").play();
+
+      const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+
+      let interval = setInterval(() => {
+        slot1.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        slot2.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        slot3.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+      }, 100);
+
+      // Lancer la requête au plus tôt
+      if (numeroMembre) {
+        const url = `${scriptUrl}?action=tirerLot&numeroMembre=${numeroMembre}`;
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            lotGagne = data.lot || data.message;
+          })
+          .catch(error => {
+            console.error("Erreur API :", error);
+            lotGagne = "❌ Une erreur est survenue.";
+          });
+      }
+
+      setTimeout(() => {
+        clearInterval(interval);
+        slot1.innerText = randomSymbol;
+        slot2.innerText = randomSymbol;
+        slot3.innerText = randomSymbol;
+
+        document.getElementById("victorySound").play();
+        lancerConfettis();
+
+        if (lotGagne) {
+          afficherPopup(lotGagne);
+        } else {
+          afficherPopup("🎁 ");
+          const attente = setInterval(() => {
+            if (lotGagne) {
+              afficherPopup(lotGagne);
+              clearInterval(attente);
+            }
+          }, 1500);
+        }
+
+        document.getElementById("playButton").style.display = "none";
+        document.getElementById("newPlayerButton").style.display = "block";
+        jeuFini = true;
+      }, 2500);
+    }
+
+    function afficherPopup(texte) {
+      let popup = document.getElementById("popup");
+      popup.innerHTML = `🎉 BRAVO ! VOUS AVEZ GAGNÉ  🎉 <br> <strong>${texte}</strong>`;
+      popup.style.display = "block";
+
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 30000);
+    }
+
+    function lancerConfettis() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 0.5, y: 0.5 },
+        colors: ['#ff5722', '#ff9800', '#ffeb3b']
+      });
+    }
+
+    function nouveauJoueur() {
+      window.location.href = 'jeulancer.html';
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        if (jeuFini) {
+          document.getElementById("newPlayerButton").click();
+        } else {
+          document.getElementById("playButton").click();
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
