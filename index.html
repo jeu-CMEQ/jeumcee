@@ -28,7 +28,7 @@
       text-align: center;
     }
 
-.cta-text {
+    .cta-text {
   font-size: clamp(2rem, 5vw, 4rem); /* Grosse, mais responsive */
   font-weight: bold;
   background: white;
@@ -152,7 +152,7 @@
 <body>
 
   <div class="cta-container">
-    <img class="hand-img" src="MAIN.png" alt="Main qui pointe">
+    <img class="hand-img" src="main.PNG" alt="Main qui pointe">
     <div class="cta-text">PARTICIPEZ AU CONCOURS</div>
   </div>
 
@@ -189,17 +189,15 @@
           document.getElementById("verificationMessage").innerText = message;
 
           if (!message || message.trim() === "") {
-            document.getElementById("verificationMessage").innerText = "❌ Vous n'avez pas répondu à la question.";
-            document.getElementById("playButton").style.display = "none";
-          } else if (message.trim().includes("Correct")) {
-            localStorage.setItem("numeroMembre", numero);
-            document.getElementById("playButton").style.display = "inline-block";
-            document.querySelector("button").style.display = "none";
-            document.getElementById("numeroMembre").disabled = true;
-          } else {
-            document.getElementById("verificationMessage").innerText = "❌ Vous ne pouvez pas jouer.";
-            document.getElementById("playButton").style.display = "none";
-          }
+  document.getElementById("verificationMessage").innerText = "❌ Vous n'avez pas répondu à la question.";
+  document.getElementById("playButton").style.display = "none";
+} else if (message.trim().includes("Correct")) {
+  localStorage.setItem("numeroMembre", numero);
+  window.location.href = 'jeu2.html'; // redirige automatiquement
+} else {
+  document.getElementById("verificationMessage").innerText = "❌ Vous ne pouvez pas jouer.";
+  document.getElementById("playButton").style.display = "none";
+}
         })
         .catch(() => {
           document.getElementById("verificationMessage").innerText = "Erreur de connexion.";
@@ -221,6 +219,10 @@
         document.getElementById("playButton").click();
       }
     });
+     // Met automatiquement le focus dans le champ à l'ouverture de la page
+  window.onload = function() {
+    document.getElementById("numeroMembre").focus();
+  };
   </script>
 
 </body>
