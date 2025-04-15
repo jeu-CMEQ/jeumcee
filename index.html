@@ -55,7 +55,6 @@
       width: 100%;
       max-width: 500px;
       gap: 1rem;
-      margin-bottom: 2rem;
     }
 
     input {
@@ -105,7 +104,7 @@
   border: 1px solid white;
   border-radius: 1rem;
   padding: 1rem 2rem 2rem;
-  max-width: 600px;
+  max-width: 800px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -139,18 +138,25 @@
   padding: 1rem;
   border-radius: 0.8rem;
   flex: 1 1 300px;
-  max-width: 600px;
-  color: black;
+  max-width: 650px;
+  color: white;
   font-weight: 500;
+  font-size:1.5rem ;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .lots li .gift {
-  margin-right: 0.6rem;
-  font-size: 1.5rem;
+  margin-right: 0.8rem;
+  font-size: 1.8rem;
   flex-shrink: 0;
 }
 
+.lots li.premier-lot {
+  flex: 1 1 100%;
+  max-width: 100%;
+  font-size: 1.6rem;
+  background-color: rgba(255, 255, 255, 0.25);
+}
 
     
   </style>
@@ -172,14 +178,14 @@
   <div class="lots">
     <h2>Lots à gagner</h2>
 <ul>
- <li>
-  <span class="gift">🎁</span>
-  <span style="font-size: 1.2em;">
-    1 prix de 
-    <span style="color: #1e3c72;">1 000&nbsp;$</span> 
-    à investir dans un REER, CELI ou CELIAPP avec CORMEL&nbsp;|&nbsp;SÉCURE
-  </span>
-</li>
+  <li class="premier-lot">
+    <span class="gift">🎁</span>
+    <span style="font-size: 1.2em;">
+      1 prix de 
+      <span style="color: #f15b00;">1 000&nbsp;$</span> 
+      à investir dans un REER, CELI ou CELIAPP avec CORMEL&nbsp;|&nbsp;SÉCURE
+    </span>
+  </li>
   <li><span class="gift">🎁</span><span>2 prix d’une nuitée à l’hôtel Fairmont Reine Elizabeth le 17 ou le 18 octobre 2025</span></li>
   <li><span class="gift">🎁</span><span>5 bons de 100 $ applicables sur une formation</span></li>
   <li><span class="gift">🎁</span><span>150 Aide-mémoires</span></li>
