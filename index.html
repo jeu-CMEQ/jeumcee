@@ -102,7 +102,7 @@
 
     .lots {
   background-color: rgba(255, 255, 255, 0.15);
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 1rem;
   padding: 1rem 2rem 2rem;
   max-width: 600px;
@@ -123,36 +123,42 @@
 
 .lots ul {
   list-style: none;
-  padding: 50;
+  padding: 0;
   margin: 0;
-  font-size: 1.2rem;
-  line-height: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
   width: 100%;
-  max-width: 400px;
 }
 
 .lots li {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.8rem;
-  color: white;
+  align-items: flex-start;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+  border-radius: 0.8rem;
+  flex: 1 1 300px;
+  max-width: 600px;
+  color: black;
   font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .lots li .gift {
-  display: inline-block;
-  width: 1.5rem; /* même largeur pour toutes les icônes 🎁 */
-  text-align: center;
+  margin-right: 0.6rem;
+  font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
-    }
+
+    
   </style>
 </head>
 <body>
 
   <div class="cta-container">
-    <img class="hand-img" src="MAIN.png" alt="Main qui pointe">
+    <img class="hand-img" src="main.PNG" alt="Main qui pointe">
     <div class="cta-text">PARTICIPEZ AU CONCOURS</div>
   </div>
 
@@ -166,10 +172,10 @@
   <div class="lots">
     <h2>Lots à gagner</h2>
 <ul>
-  <li><span class="gift">🎁</span><span style="color:black; font-size: 1.2em;">Gros lot : REER 1000 $</span></li>
-  <li><span class="gift">🎁</span><span>2 nuitées au congrès 2025</span></li>
-  <li><span class="gift">🎁</span><span>5 bons de 100 $ pour la formation</span></li>
-  <li><span class="gift">🎁</span><span>154 aide-mémoire </span></li>
+  <li><span class="gift">🎁</span><span style="color:#1e3c72; font-size: 1.2em;">1 prix de 1 000 $ à investir dans un REER, CELI ou CELIAPP avec CORMEL | SÉCURE</span></li>
+  <li><span class="gift">🎁</span><span>2 prix d’une nuitée à l’hôtel Fairmont Reine Elizabeth le 17 ou le 18 octobre 2025</span></li>
+  <li><span class="gift">🎁</span><span>5 bons de 100 $ applicables sur une formation</span></li>
+  <li><span class="gift">🎁</span><span>150 Aide-mémoires</span></li>
   <li><span class="gift">🎁</span><span>250 épinglettes </span></li>
 </ul>
 
